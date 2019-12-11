@@ -1,36 +1,44 @@
 <?php
 require_once  'Class_User.php';
 require_once  'DB_func.php';
-require_once  'db.php';
+require_once 'Menu.php';
 
+$db=new DB_func();
+$result=$db->Select('groups');
+$rows=$result->num_rows;
 $data=$_POST;
-$conn=new mysqli($hm, $un, $pw, $db);
-if($conn->connect_error)die($conn->error);
 if(isset($data['add_user'])&&$data['name']!=''){
-$user=new User($data['name'],$data['group']);
-$db=new DB_func($user);
-$db->Add_user_to_DB($conn);
+
 }
-
-?>
-
+echo <<<_END
 <form action="Add_user.php" method="post">
     <p>
         <strong>Введите имя</strong>
         <input type="text" name="name">
     </p>
     <p>
-        <strong>Выберите группу</strong>
-        <select size="3"  name="group" >
-            <option value="Админ">Админ</option>
-            <option value="Гость">Гость</option>
-            <option value="Саппорт">Саппорт</option>
-        </select>
-    </p>
-    <p>
         <strong>Введите логин</strong>
         <input type="file" name="avatar">
     </p>
+    <p>
+    <strong>Выберите группу</strong>
+    <select size='$rows'  name='group'>
+_END;
+for($i=0;$i<$rows;$i++) {
+    $result->data_seek($i);
+    $row = $result->fetch_array(MYSQLI_ASSOC);
+    echo "<option value='$row[group_name]'>$row[group_name]</option>";
+}
+
+echo <<<_END
+</select>
+        </p>
         <button type="submit" name="add_user">Добавить</button>
     </p>
 </form>
+_END;
+
+
+
+
+

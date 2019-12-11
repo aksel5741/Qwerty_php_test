@@ -4,7 +4,7 @@ echo <<<_END
 <ul>
 <li><a href="Add_user.php">Добавить пользователя</a></li>
 <li><a href="">Добавить группу </a></li>
-<li><a href="">Список пользователей</a></li>
+<li><a href="All_users.php">Список пользователей</a></li>
 <li><a href="">Выйти</a></li>
 </ul>
 <hr>

@@ -1,5 +1,5 @@
 <?php
 $hm = 'localhost';
-$db = 'Data';
+$db = 'data';
 $un = 'root';
 $pw = '';
