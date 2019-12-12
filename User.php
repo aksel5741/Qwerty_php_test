@@ -2,11 +2,12 @@
 require 'Group.php';
 class User{
     public $Name;
-    public $Id;
     public $Group;
-    function __construct($name,$group_name){
+    public $Avatar;
+    function __construct($name,$group_name,$avatar){
         $this->Group=new Group($group_name);
         $this->Name=$name;
+        $this->Avatar=$avatar;
     }
 
 }
