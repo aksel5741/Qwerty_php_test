@@ -8,17 +8,18 @@ class Group_manager
     {
         $this->DB=new DB_func();
     }
-
     function Get_group_id($group_name){
-      return $this->DB->Result($this->DB->Select('groups','id','group_name','group_name', $group_name));
+        $result=$this->DB->Select('groups','id','group_name', $group_name);
+        return array_shift($result);
     }
     function Get_group_name($group_id){
-        return $this->DB->Result($this->DB->Select('groups','group_name','id','id', $group_id));
+        $result=$this->DB->Select('groups','group_name','id', $group_id);
+        return array_shift($result);
     }
     function Groups_names(){
         $result=$this->DB->Select('groups','group_name');
         $rows=$result->num_rows;
-        echo '<select size="$rows"  name="group" required>';
+/*        echo '<select size="$rows"  name="group" required>';*/
         for($i=0;$i<$rows;$i++) {
             $result->data_seek($i);
             $row = $result->fetch_array(MYSQLI_ASSOC);

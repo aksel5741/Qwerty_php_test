@@ -29,7 +29,7 @@ class DB_func{
         $this->pass=PASSWORD;
         $this->Connect_to_db();
     }
-    function Connect_to_db(){
+    private function Connect_to_db(){
         if(!$this->connection){
             $this->connection= new mysqli($this->server,$this->user,$this->pass,$this->db_name);
             if ($this->connection->connect_error) {
@@ -53,19 +53,16 @@ class DB_func{
              die($this->connection->connect_error);
         }
     }
-    function Select($table,$rows='*',$what=NULL,$where=NULL,$value=NULL){
+    function Select($table,$rows='*',$where=NULL,$value=NULL){
         if($this->Table_check($table))
         {
-            if($what!=''){
-                $query="SELECT ".$rows." FROM ".$table;
                 if($where!=''){
-                    $query.=" WHERE ".$where."= "."'".$value."'";
+                    $query="SELECT ".$rows." FROM ".$table." WHERE ".$where."= "."'".$value."'";
                 }
-            }
             else $query="SELECT ".$rows." FROM ". $table;
             $result=$this->connection->query($query);
             if(!$result)die($this->connection->connect_error);
-            else return $result;
+            else return $this->Result($result);
         }
     }
     function Insert($table,$data){
@@ -84,6 +81,11 @@ class DB_func{
         else return true;
         }
     }
+    function Update($query){
+        $result=$this->connection->query($query);
+        if(!$result)die($this->connection->connect_error);
+        else echo "POECHALI";
+    }
     function Delete($table,$where,$value){
         if($this->Table_check($table)){
             $query="DELETE FROM ".$table." WHERE ".$where."=";
@@ -96,8 +98,14 @@ class DB_func{
             else return true;
         }
     }
-    function Result($var){
-    $result=$var->fetch_array(MYSQLI_ASSOC);
-    return array_shift($result);
+    private function Result($var){
+        if($var->num_rows==0){
+           return false;
+        }
+        else if($var->num_rows>1){
+           return $var;
+        }
+        return $result=$var->fetch_assoc();
+
     }
 }

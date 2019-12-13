@@ -18,7 +18,7 @@ $gm->Add_group($data['group_name']);
 <form action="Add_group.php" method="post">
     <p>
         <strong>Имя группы</strong>
-        <input type="text" name="group_name">
+        <input value="<?php isset($_GET['qroup_name']) ? print($_GET["qroup_name"]):print('');?>" type="text" name="group_name">
     </p>
     <div>
         <button type="submit" name="create">Создать</button>

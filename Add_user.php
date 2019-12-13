@@ -8,17 +8,15 @@ $gm=new Group_manager();
 $data=$_POST;
 $user_manager=new User_manager();
 if(isset($_GET['id'])){
-$update=$user_manager->Update($_GET['id']);
+    $user_id=$_GET['id'];
+    $result=$user_manager->Show('id',$_GET['id']);
+    $button='update';
 }
-if(isset($data['add_user'])&&$data['name']!=''){
-    if( !empty( $_FILES['image']['name'] ) ) {
-        if ( $_FILES['image']['error'] == 0 ) {
-            if( substr($_FILES['image']['type'], 0, 5)=='image' ) {
-                $image = addslashes(file_get_contents($_FILES['image']['tmp_name']));
-            }
-        }
+if((isset($data['add_user'])&&$data['name']!='')){
+    if($data['add_user']=='update'){
+        $user_manager->Update($data);
     }
-    $user_manager->Add($data['name'],$data['group'],$image);
+    else $user_manager->Add($data['name'],$data['group']);
 }
 ?>
 <!doctype html>
@@ -29,9 +27,11 @@ if(isset($data['add_user'])&&$data['name']!=''){
 </head>
 <body>
 <form action="Add_user.php" enctype="multipart/form-data" method="post">
+
+    <input hidden name="user_id" value="<?php isset($user_id) ? print($user_id):print('');?>">
     <p>
         <strong>Введите имя</strong>
-        <input  type="text" name="name"  required>
+        <input value="<?php isset($result['name']) ? print($result['name']): print('');?> " type="text" name="name"  required>
     </p>
     <p>
         <strong>Аватар</strong>
@@ -39,11 +39,11 @@ if(isset($data['add_user'])&&$data['name']!=''){
     </p>
     <p>
         <strong>Выберите группу</strong>
-
-       <?php $gm->Groups_names(); ?>
+        <select name="group" required>
+       <?php $gm->Groups_names();?>
         </select>
     </p>
-    <button type="submit" name="add_user">Добавить</button>
+    <button type="submit" name="add_user" value="<?php isset($button) ? print($button):print('');?>">Сохранить</button>
     </p>
 </form>
 </body>
