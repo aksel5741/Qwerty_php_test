@@ -4,6 +4,11 @@ require_once 'Menu.php';
 
 $db=new DB_func();
 $um=new User_manager();
+$data=$_POST;
+
+if(count($data)!=0){
+     $um->Delete(array_shift($data));
+}
 ?>
 <!doctype html>
 <html>
@@ -12,15 +17,18 @@ $um=new User_manager();
     <title></title>
 </head>
 <body>
-<table border="1">
-    <tr>
-        <th>id</th>
-        <th>name</th>
-        <th>avatar</th>
-        <th>group</th>
-    </tr>
-    <?php $um->Show()?>
-</table>
+<form action="All_users.php" method="post">
+    <table border="1">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>avatar</th>
+            <th>group</th>
+        </tr>
+        <?php $um->Show()?>
+    </table>
+</form>
+
 </body>
 </html>
 

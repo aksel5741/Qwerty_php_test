@@ -78,6 +78,7 @@ class DB_func{
         }
         $data=implode(',',$data);
         $query.=$data.")";
+
         $result=$this->connection->query($query);
         if(!$result)die($this->connection->connect_error);
         else return true;

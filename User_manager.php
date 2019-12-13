@@ -18,11 +18,10 @@ class User_manager
         $this->User=new User($user_name,$group_name,$avatar);
         $this->Db->Insert('users',array($this->User->Name,$this->User->Avatar,$this->Group_managaer->Get_group_id($group_name)));
     }
-    function Delete(){
-
+    function Delete($user_id){
+        $this->Db->Delete('users','id',$user_id);
     }
-    function Update(){
-
+    function Update($user_id){
     }
     function Show(){
         $result=$this->Db->Select('users');
@@ -35,13 +34,13 @@ class User_manager
         echo <<<_END
          <table border="1">
             <tr>
-           <td>$row[id]</td>
-           <td>$row[name]</td>
-           <td><img src="data:image/jpeg;base64, $show_img" alt="" width="20px"></td>
-           <td>$group_name</td>
-           <td> <button type="submit" name="$row[name]" value="$row[id]">Удалить</button></td>
-        </tr>
-    </table>
+                <td >$row[id]</td>
+                <td><a href="./Add_user.php?id=$row[id]">$row[name]</a></td>
+                <td><img src="data:image/jpeg;base64, $show_img" alt="" width="20px"></td>
+                <td>$group_name</td>
+                <td> <button type="submit" name="$row[id]" value="$row[id]" >Удалить</button></td>
+            </tr>
+           </table>
 _END;
         }
     }

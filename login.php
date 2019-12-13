@@ -16,7 +16,6 @@ if(isset($data['try_signin'])){
     }
 }
 ?>
-
 <form action="login.php" method="post">
     <p>
         <strong>Введите логин</strong>
@@ -29,5 +28,4 @@ if(isset($data['try_signin'])){
     <div>
         <button type="submit" name="try_signin">Войти</button>
     </div>
-
 </form>

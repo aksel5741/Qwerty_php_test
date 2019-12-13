@@ -6,6 +6,10 @@ require_once 'Menu.php';
 
 $gm=new Group_manager();
 $data=$_POST;
+$user_manager=new User_manager();
+if(isset($_GET['id'])){
+$update=$user_manager->Update($_GET['id']);
+}
 if(isset($data['add_user'])&&$data['name']!=''){
     if( !empty( $_FILES['image']['name'] ) ) {
         if ( $_FILES['image']['error'] == 0 ) {
@@ -14,7 +18,6 @@ if(isset($data['add_user'])&&$data['name']!=''){
             }
         }
     }
-    $user_manager=new User_manager();
     $user_manager->Add($data['name'],$data['group'],$image);
 }
 ?>
@@ -28,14 +31,15 @@ if(isset($data['add_user'])&&$data['name']!=''){
 <form action="Add_user.php" enctype="multipart/form-data" method="post">
     <p>
         <strong>Введите имя</strong>
-        <input type="text" name="name">
+        <input  type="text" name="name"  required>
     </p>
     <p>
         <strong>Аватар</strong>
-        <input type="file" name="image">
+        <input type="file" name="image" required>
     </p>
     <p>
         <strong>Выберите группу</strong>
+
        <?php $gm->Groups_names(); ?>
         </select>
     </p>
