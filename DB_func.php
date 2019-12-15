@@ -84,7 +84,6 @@ class DB_func{
     function Update($query){
         $result=$this->connection->query($query);
         if(!$result)die($this->connection->connect_error);
-        else echo "POECHALI";
     }
     function Delete($table,$where,$value){
         if($this->Table_check($table)){
@@ -102,10 +101,7 @@ class DB_func{
         if($var->num_rows==0){
            return false;
         }
-        else if($var->num_rows>1){
            return $var;
-        }
-        return $result=$var->fetch_assoc();
 
     }
 }

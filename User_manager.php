@@ -23,21 +23,19 @@ class User_manager
         $this->Db->Delete('users','id',$user_id);
     }
     function Update($data){
-        foreach ($data as &$var){
-            if(is_string($var)){
-                $var='"'.$var.'"';
-            }
-        }
         $avatar=$this->Img_format();
-        $query="UPDATE users SET name= ".$data['name'].", avatar= ".$avatar.", group_id=".$this->Group_managaer->Get_group_id($data['group'])."WHERE id=".$data['user_id'];
-        echo $query;
+        $data['name']='"'.$data['name'].'"';
+        $avatar='"'.$avatar.'"';
+        $query="UPDATE users SET name= ".$data['name'].", avatar= ".$avatar.", group_id=".$this->Group_managaer->Get_group_id($data['group'])." WHERE id=".$data['user_id'];
         $this->Db->Update($query);
     }
     function Show($where=NULL,$value=NULL){
         if(isset($where)){
-            return $result=$this->Db->Select('users','*',$where,$value);
+             $result=$this->Db->Select('users','*',$where,$value);
+             return $result=$result->fetch_assoc();
         }
         $result=$this->Db->Select('users');
+        if(is_bool($result))return;
         $rows=$result->num_rows;
         for($i=0;$i<$rows;$i++){
             $result->data_seek($i);
@@ -50,7 +48,7 @@ class User_manager
                 <td >$row[id]</td>
                 <td><a href="./Add_user.php?id=$row[id]">$row[name]</a></td>
                 <td><img src="data:image/jpeg;base64, $show_img" alt="" width="45px"></td>
-                <td><a href="./Add_group.php?qroup_name=$group_name">$group_name</a></td>
+                <td><a href="./Add_group.php?group_name=$group_name">$group_name</a></td>
                 <td> <button type="submit" name="$row[id]" value="$row[id]" >Удалить</button></td>
             </tr>
            </table>

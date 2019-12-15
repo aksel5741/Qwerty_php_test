@@ -5,8 +5,14 @@ require_once 'Group_manager.php';
 
 $gm=new Group_manager();
 $data=$_POST;
+if(isset($_GET['group_name'])){
+    $button='update';
+}
 if(isset($data['group_name'])&&isset($data['create'])){
-$gm->Add_group($data['group_name']);
+    if($data['create']=='update'){
+        $gm->Update($data);
+    }
+    else $gm->Add_group($data['group_name']);
 }
 ?>
 <!doctype html>
@@ -14,14 +20,16 @@ $gm->Add_group($data['group_name']);
 <head>
     <meta charset="utf-8">
     <title>Загрузка картинки в БД</title>
+    <link rel="stylesheet" type="text/css" href="all_users_style.css">
 </head>
 <form action="Add_group.php" method="post">
+    <input hidden name="old_name" value="<?php isset($_GET['group_name']) ? print($_GET['group_name']):print('');?>">
     <p>
         <strong>Имя группы</strong>
-        <input value="<?php isset($_GET['qroup_name']) ? print($_GET["qroup_name"]):print('');?>" type="text" name="group_name">
+        <input value="<?php isset($_GET['group_name']) ? print($_GET['group_name']):print('');?>" type="text" name="group_name">
     </p>
     <div>
-        <button type="submit" name="create">Создать</button>
+        <button type="submit" name="create" value="<?php isset($button) ? print($button):print('');?>">Сохранить</button>
     </div>
 </form>
 
