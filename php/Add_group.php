@@ -1,19 +1,10 @@
 <?php
 require_once 'Menu.php';
-require_once 'DB_func.php';
-require_once 'Group_manager.php';
+require_once 'User_manager.php';
 
-$gm=new Group_manager();
-$data=$_POST;
-if(isset($_GET['group_name'])){
-    $button='update';
-}
-if(isset($data['group_name'])&&isset($data['create'])){
-    if($data['create']=='update'){
-        $gm->Update($data);
-    }
-    else $gm->Add_group($data['group_name']);
-}
+$um=new User_manager();
+$result=$um->Group_managaer->Page_state();
+
 ?>
 <!doctype html>
 <html>
@@ -29,7 +20,7 @@ if(isset($data['group_name'])&&isset($data['create'])){
         <input value="<?php isset($_GET['group_name']) ? print($_GET['group_name']):print('');?>" type="text" name="group_name">
     </p>
     <div>
-        <button type="submit" name="create" value="<?php isset($button) ? print($button):print('');?>">Сохранить</button>
+        <button type="submit" name="create" value="<?php isset($result['button']) ? print($result['button']):print('');?>">Сохранить</button>
     </div>
 </form>
 

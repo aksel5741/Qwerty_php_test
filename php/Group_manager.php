@@ -1,12 +1,26 @@
 <?php
-require_once 'DB_func.php';
 
 class Group_manager
 {
     private $DB;
-    function __construct()
+
+    function __construct($conn)
     {
-        $this->DB=new DB_func();
+        $this->DB=$conn;
+    }
+
+    function Page_state(){
+
+        if(isset($_GET['group_name'])){
+            $result['button']='update';
+            return $result;
+        }
+        if(isset($_POST['group_name'])&&isset($_POST['create'])){
+            if($_POST['create']=='update'){
+                $this->Update($_POST);
+            }
+            else $this->Add_group($_POST['group_name']);
+        }
     }
     function Get_group_id($group_name){
         $result=$this->DB->Select('groups','id','group_name', $group_name);
@@ -29,13 +43,14 @@ class Group_manager
             echo "<option value='$row[group_name]'>$row[group_name]</option>";
         }
     }
-    function Add_group($name){
+
+    private function Add_group($name){
         if(!$this->Get_group_id($name)){
             $this->DB->Insert('groups',array($name));
         }
         else echo "Группа ".$name." уже существует";
     }
-    function Update($data){
+    private function Update($data){
         if(!$this->Get_group_id($data['group_name'])){
             foreach ($data as &$var){
                 $var='"'.$var.'"';

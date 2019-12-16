@@ -7,27 +7,52 @@ class User_manager
 {
     private $User;
     private $Db;
-    private $Group_managaer;
+    public $Group_managaer;
 
     function __construct()
-    {
-        $this->Db=new DB_func();
-        $this->Group_managaer=new Group_manager();
+{
+    $this->Db=new Data_base();
+    $this->Group_managaer=new Group_manager($this->Db);
+}
+
+    private function Img_format(){
+        if( !empty( $_FILES['image']['name'] ) ) {
+            if ( $_FILES['image']['error'] == 0 ) {
+                if( substr($_FILES['image']['type'], 0, 5)=='image' ) {
+                    return $avatar = addslashes(file_get_contents($_FILES['image']['tmp_name']));
+                }
+            }
+        }
     }
-    function Add($user_name,$group_name){
+    private function Add($user_name,$group_name){
         $avatar=$this->Img_format();
         $this->User=new User($user_name,$group_name,$avatar);
         $this->Db->Insert('users',array($this->User->Name,$this->User->Avatar,$this->Group_managaer->Get_group_id($group_name)));
     }
+    private function Update($data){
+    $avatar=$this->Img_format();
+    $data['name']='"'.$data['name'].'"';
+    $avatar='"'.$avatar.'"';
+    $query="UPDATE users SET name= ".$data['name'].", avatar= ".$avatar.", group_id=".$this->Group_managaer->Get_group_id($data['group'])." WHERE id=".$data['user_id'];
+    $this->Db->Update($query);
+}
+
     function Delete($user_id){
         $this->Db->Delete('users','id',$user_id);
     }
-    function Update($data){
-        $avatar=$this->Img_format();
-        $data['name']='"'.$data['name'].'"';
-        $avatar='"'.$avatar.'"';
-        $query="UPDATE users SET name= ".$data['name'].", avatar= ".$avatar.", group_id=".$this->Group_managaer->Get_group_id($data['group'])." WHERE id=".$data['user_id'];
-        $this->Db->Update($query);
+    function Page_state(){
+        if(isset($_GET['id'])){
+            $result=$this->Show('id',$_GET['id']);
+            $result['button']='update';
+            $result['avatar'] = base64_encode($result['avatar']);
+            return $result;
+        }
+        if((isset($_POST['add_user'])&&$_POST['name']!='')){
+            if($_POST['add_user']=='update'){
+                $this->Update($_POST);
+            }
+            else $this->Add($_POST['name'],$_POST['group']);
+        }
     }
     function Show($where=NULL,$value=NULL){
         if(isset($where)){
@@ -55,14 +80,6 @@ class User_manager
 _END;
         }
     }
-    private function Img_format(){
-        if( !empty( $_FILES['image']['name'] ) ) {
-            if ( $_FILES['image']['error'] == 0 ) {
-                if( substr($_FILES['image']['type'], 0, 5)=='image' ) {
-                   return $avatar = addslashes(file_get_contents($_FILES['image']['tmp_name']));
-                }
-            }
-        }
-    }
+
 
 }

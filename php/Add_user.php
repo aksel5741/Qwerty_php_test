@@ -1,23 +1,9 @@
 <?php
 require_once 'User_manager.php';
-require_once 'Group_manager.php';
-require_once  'DB_func.php';
 require_once 'Menu.php';
 
-$gm=new Group_manager();
-$data=$_POST;
 $user_manager=new User_manager();
-if(isset($_GET['id'])){
-    $user_id=$_GET['id'];
-    $result=$user_manager->Show('id',$_GET['id']);
-    $button='update';
-}
-if((isset($data['add_user'])&&$data['name']!='')){
-    if($data['add_user']=='update'){
-        $user_manager->Update($data);
-    }
-    else $user_manager->Add($data['name'],$data['group']);
-}
+$result=$user_manager->Page_state();
 ?>
 <!doctype html>
 <html>
@@ -29,22 +15,27 @@ if((isset($data['add_user'])&&$data['name']!='')){
 <body>
 <form action="Add_user.php" enctype="multipart/form-data" method="post">
 
-    <input hidden name="user_id" value="<?php isset($user_id) ? print($user_id):print('');?>">
+    <input hidden name="user_id" value="<?php isset($result['id']) ? print($result['id']):print('');?>">
     <p>
         <strong>Введите имя</strong>
         <input value="<?php isset($result['name']) ? print($result['name']): print('');?> " type="text" name="name"  required>
+        <?php if(isset($result['avatar'])):?>
+            <img src="data:image/jpeg;base64,<?php echo $result['avatar'];?>" alt="" width="45px">
+        <?php endif;?>
     </p>
     <p>
         <strong>Аватар</strong>
         <input type="file" name="image" required>
+
+
     </p>
     <p>
         <strong>Выберите группу</strong>
         <select name="group" required>
-       <?php $gm->Groups_names();?>
+            <?php $user_manager->Group_managaer->Groups_names();?>
         </select>
     </p>
-    <button type="submit" name="add_user" value="<?php isset($button) ? print($button):print('');?>">Сохранить</button>
+    <button type="submit" name="add_user" value="<?php isset($result['button']) ? print($result['button']):print('');?>">Сохранить</button>
     </p>
 </form>
 </body>

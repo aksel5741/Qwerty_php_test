@@ -2,7 +2,7 @@
 require_once 'User_manager.php';
 require_once 'Menu.php';
 
-$db=new DB_func();
+
 $um=new User_manager();
 $data=$_POST;
 
