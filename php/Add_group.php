@@ -11,7 +11,7 @@ $result=$um->Group_managaer->Page_state();
 <head>
     <meta charset="utf-8">
     <title>Загрузка картинки в БД</title>
-    <link rel="stylesheet" type="text/css" href="all_users_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/all_users_style.css">
 </head>
 <form action="Add_group.php" method="post">
     <input hidden name="old_name" value="<?php isset($_GET['group_name']) ? print($_GET['group_name']):print('');?>">

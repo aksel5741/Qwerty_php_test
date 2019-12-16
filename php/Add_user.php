@@ -10,7 +10,7 @@ $result=$user_manager->Page_state();
 <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" type="text/css" href="all_users_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/all_users_style.css">
 </head>
 <body>
 <form action="Add_user.php" enctype="multipart/form-data" method="post">

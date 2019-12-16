@@ -1,6 +1,6 @@
 <?php
 echo <<<_END
-<link rel="stylesheet" type="text/css" href="menu.css">
+<link rel="stylesheet" type="text/css" href="../css/menu.css">
 <ul>
 <li><a href="Add_user.php">Добавить пользователя</a></li>
 <li><a href="Add_group.php">Добавить группу </a></li>

@@ -1,5 +1,5 @@
 <?php
-require_once 'db.php';
+require_once 'php/db.php';
 define("PASSWORD",'password');
 define('LOGIN','admin');
 $data=$_POST;
@@ -10,7 +10,7 @@ if(isset($data['try_signin'])){
         if(PASSWORD!=$data['password'])$errors[]='Неверний пароль';
         if(empty($errors)){
             $_SESSION['logged_user']=$_POST['login'];
-            header('Location:All_users.php');
+            header('Location:php/All_users.php');
         }
         else{
             echo '<div style="color:red;">'.array_shift($errors).'</div><hr>';
@@ -23,7 +23,7 @@ if(isset($data['try_signin'])){
 <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" type="text/css" href="login_style.css">
+    <link rel="stylesheet" type="text/css" href="css/login_style.css">
 </head>
 <body>
 <form  action="login.php" method="post">

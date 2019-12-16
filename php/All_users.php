@@ -15,7 +15,7 @@ if(count($data)!=0){
 <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" type="text/css" href="all_users_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/all_users_style.css">
 </head>
 <body>
 <form action="All_users.php" method="post">
